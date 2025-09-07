@@ -1,33 +1,73 @@
+/* --- O CONTAINER PRINCIPAL (EFEITO DE VIDRO) --- */
 .loading-overlay {
-  position: fixed; /* Fica por cima de todo o conteúdo */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  
-  /* Efeito de fundo */
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  
-  /* Centraliza o conteúdo */
+  z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
   
-  z-index: 9999; /* Garante que está no topo de tudo */
+  /* A mágica da imersão! */
+  background-color: rgba(13, 17, 23, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  /* Animação de fade-in para uma entrada suave */
+  animation: fadeIn 0.3s ease-in-out;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* --- O HUB DE CONTEÚDO NO CENTRO --- */
 .loading-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+  color: #f1f5f9;
 }
 
+.loading-animation {
+  width: 150px;
+  height: 150px;
+}
+
+/* --- TEXTOS E ANIMAÇÃO DE RETICÊNCIAS --- */
 .loading-text {
-  font-family: 'Poppins', sans-serif; /* Usando a fonte da Pokédex */
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  color: #4A5568;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* A animação das reticências é feita com um pseudo-elemento */
+.loading-text::after {
+  content: '.';
+  animation: dots 1.4s ease-in-out infinite;
+}
+
+@keyframes dots {
+  0% { content: '.'; }
+  33% { content: '..'; }
+  66% { content: '...'; }
+  100% { content: '.'; }
+}
+
+/* --- DICA DO PROFESSOR --- */
+.loading-tip {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #94a3b8; /* Cinza claro, para diferenciar do texto principal */
+  max-width: 300px;
+  margin-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1rem;
 }

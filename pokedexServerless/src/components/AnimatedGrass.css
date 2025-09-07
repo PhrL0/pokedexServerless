@@ -1,59 +1,72 @@
+/* --- O CONTAINER PRINCIPAL --- */
 .animated-grass-container {
   position: absolute;
-  width: 500px; /* Largura da "moita" de grama */
-  height: 300px; /* Altura da "moita" de grama */
-  bottom: 50%; /* Posição vertical - ajuste conforme necessário */
-  left: 50%;
-  transform: translateX(-50%); /* Centraliza horizontalmente */
-  z-index: 5;
-  pointer-events: none; /* A grama não pode ser clicada */
+  /* Damos uma perspectiva 3D sutil para as transformações */
+  perspective: 400px;
+  /* Removemos o cursor, a interação é na pokébola principal */
+  pointer-events: none; 
 }
 
+/* --- A IMAGEM DA GRAMA --- */
 .tall-grass-image {
-  width: 100%;
-  height: 100%;
+  width: 150px; /* Ajuste o tamanho conforme necessário */
+  height: auto;
   
-  /* Ponto Chave: A animação vai pivotar a partir da base da imagem */
+  /* PONTO CRÍTICO: A animação vai girar a partir da base, não do centro. */
   transform-origin: bottom center;
-
-  /* Aplica a animação que definimos abaixo */
-  animation: rustleGrass 7s ease-in-out infinite;
+  
+  /* Inicia com a animação de balanço suave (idle) */
+  animation: gentle-sway 5s ease-in-out infinite;
 }
 
-/* A MÁGICA ACONTECE AQUI:
-  Definimos uma animação longa (7 segundos) onde a maior parte do tempo
-  a grama fica parada, e só em alguns momentos ela treme.
-*/
-@keyframes rustleGrass {
-  0% {
-    transform: rotate(0deg); /* Posição inicial, parada */
+/* --- A SOMBRA NA BASE PARA DAR PROFUNDIDADE --- */
+.grass-shadow {
+  position: absolute;
+  bottom: -5px; /* Ligeiramente abaixo da base da grama */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  filter: blur(8px);
+  z-index: -1;
+}
+
+/* --- A MÁGICA: TROCA DE ANIMAÇÃO QUANDO A CLASSE 'rustling' ESTÁ PRESENTE --- */
+.animated-grass-container.rustling .tall-grass-image {
+  /* Substitui a animação suave pela animação de tremor */
+  animation: intense-rustle 1.2s ease-in-out infinite;
+}
+
+
+/* === KEYFRAMES DAS ANIMAÇÕES === */
+
+/* Animação 1: O balanço suave e constante do vento */
+@keyframes gentle-sway {
+  0%, 100% {
+    transform: rotate(0deg);
   }
-  
+  50% {
+    transform: rotate(2deg) translateX(2px);
+  }
+}
+
+/* Animação 2: O tremor que simula um Pokémon escondido */
+@keyframes intense-rustle {
+  0%, 100% {
+    transform: rotate(0deg) skewX(0deg) translateX(0);
+  }
   20% {
-    transform: rotate(0deg); /* Continua parada */
+    transform: rotate(-4deg) skewX(8deg) translateX(-5px);
   }
-
-  25% {
-    transform: rotate(4deg) translateX(5px); /* Primeiro tremor para a direita */
-  }
-  
-  30% {
-    transform: rotate(-4deg) translateX(-5px); /* Tremor para a esquerda */
-  }
-
-  35% {
-    transform: rotate(2deg); /* Volta um pouco */
-  }
-
   40% {
-    transform: rotate(-1deg); /* Volta mais um pouco */
+    transform: rotate(3deg) skewX(-6deg) translateX(4px);
   }
-
-  45% {
-    transform: rotate(0deg); /* Volta ao normal e fica parada */
+  60% {
+    transform: rotate(-2deg) skewX(4deg) translateX(-2px);
   }
-
-  100% {
-    transform: rotate(0deg); /* Permanece parada até o fim do ciclo */
+  80% {
+    transform: rotate(1deg) skewX(-2deg) translateX(1px);
   }
 }

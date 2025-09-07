@@ -1,29 +1,50 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
 
+/* --- CONFIGURAÇÕES GERAIS --- */
 body {
   font-family: 'Poppins', sans-serif;
 }
 
 .dashboard-container {
-  background-image: url('../assets/dashboard.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-color: #7EC0EE; /* Cor de céu suave como fallback */
   height: 100vh;
   width: 100vw;
+  position: relative; 
   display: flex;
   flex-direction: column;
   color: white;
-  overflow: hidden; /* Previne barras de rolagem */
+  overflow: hidden; 
 }
 
+/* --- 1. FUNDO DINÂMICO E PARALLAX --- */
+.dashboard-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%; /* Largura duplicada para a animação de rolagem */
+  height: 100%;
+  background-image: url('../assets/Gemini_Generated_Image_g2kz8cg2kz8cg2kz.png');
+  background-size: cover;
+  background-position: center;
+  z-index: 1; /* Camada mais profunda */
+  animation: parallax-scroll 180s linear infinite; /* Animação mais lenta para o fundo distante */
+}
+
+/* --- ANIMAÇÕES DE PARALLAX --- */
+@keyframes parallax-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* Rola a imagem inteira pela metade da largura (200% -> 100%) */
+}
+
+/* --- 2. HUD (CABEÇALHO) --- */
 .dashboard-header {
+  position: relative;
+  z-index: 20; /* Fica acima de tudo, exceto modais */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2rem;
-  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
-  flex-shrink: 0;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%);
 }
 
 .header-left, .header-right {
@@ -33,81 +54,81 @@ body {
 }
 
 .trainer-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
 }
 
 .capture-counter {
   font-size: 1rem;
-  font-weight: 600;
-  background-color: rgba(0,0,0,0.3);
-  padding: 0.5rem 1rem;
+  font-weight: 500;
+  background-color: rgba(0,0,0,0.4);
+  padding: 0.4rem 0.8rem;
   border-radius: 20px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .header-pokeball-icon {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
 }
 
-.dashboard-main {
-  flex-grow: 1;
-  position: relative; /* Necessário para posicionar a action-box */
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-}
-
-.action-box {
-  background-color: rgba(255, 255, 255, 0.95);
-  width: 90%;
-  max-width: 450px;
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+/* --- 3. ELEMENTOS DO MUNDO (POKÉMON E GRAMA) --- */
+.hotspot-container {
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  text-align: center;
-  gap: 0.5rem;
-  
 }
 
-.capture-button {
-  width: 100%;
-  padding: 1rem;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: white;
-  background: linear-gradient(180deg, #60D68A 0%, #3DB872 100%);
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.world-pokemon-sprite {
+  height: 64px;
+  width: auto;
+  object-fit: contain;
+  image-rendering: pixelated;
+  position: absolute;
+  bottom: 60px;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
 }
 
-.capture-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+.world-pokemon-sprite.visible {
+  opacity: 1;
+  transform: translateY(0);
+  animation: gentle-bob 3s ease-in-out infinite;
 }
 
-.capture-button:disabled {
-  background: #B0B0B0;
-  cursor: not-allowed;
+@keyframes gentle-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
-.action-pokeball-icon {
-  width: 60px;
-  height: 60px;
-  margin-top: 0.5rem;
+/* O componente AnimatedGrass já tem seu próprio CSS, que se encaixa aqui perfeitamente */
+/* O .animated-grass-container deve ter position: relative e z-index: 10 dentro do hotspot */
+
+/* --- 4. ÁREA DE AÇÃO PRINCIPAL --- */
+.dashboard-main {
+  position: absolute;
+  bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15; /* Acima dos hotspots, mas abaixo do HUD */
 }
-.action-title {
-  color: #4A5568; /* Cor escura para o texto */
-  font-weight: 600;
-  margin: 0;
-  font-size: 1.1rem;
+
+/* --- 5. NOTIFICAÇÕES TOAST --- */
+.toast-notification {
+  background: rgba(29, 38, 59, 0.8) !important;
+  backdrop-filter: blur(8px) !important;
+  color: #fff !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 1rem !important;
 }

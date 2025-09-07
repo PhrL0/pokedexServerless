@@ -1,189 +1,231 @@
-/* Estilos Globais e Reset */
+/* Definindo variáveis de cor para fácil manutenção */
 :root {
-  --primary-color: #3B82F6; /* Azul */
-  --primary-hover: #2563EB;
-  --dark-charcoal: #2D3748;
-  --light-gray: #F7FAFC;
-  --border-gray: #E2E8F0;
-  --text-color: #4A5568;
-  --error-color: #E53E3E;
-  --white-color: #FFFFFF;
+  --primary-glow: rgba(59, 130, 246, 0.5);
+  --primary-border: #3b82f6;
+  --error-glow: rgba(239, 68, 68, 0.5);
+  --error-border: #ef4444;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --surface-background: rgba(15, 23, 42, 0.75);
+  --surface-border: rgba(51, 65, 85, 0.5);
+}
+
+/* Reset básico e estilos globais */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--light-gray);
-  color: var(--text-color);
 }
 
-/* Container principal para centralizar tudo */
+/* Container principal com fundo animado */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 20px;
-  width: 100%; /* Garante que ocupe a largura total também */
-  box-sizing: border-box;
-  background-image: url('../assets/login.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  padding: 1rem;
+  background: linear-gradient(-45deg, #0d1117, #1e3a8a, #312e81, #020617);
+  background-size: 400% 400%;
+  animation: gradientBG 20s ease infinite;
 }
 
-/* A caixa do formulário de login */
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Card de login com efeito de vidro (glassmorphism) */
 .login-box {
-  background-color: var(--white-color);
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  padding: 2rem;
+  background: var(--surface-background);
+  border: 1px solid var(--surface-border);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Logo estilizado */
+.title-logo {
   text-align: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
 }
 
-.title {
-  font-size: 2rem;
-  color: var(--dark-charcoal);
-  margin-top: 0;
-  margin-bottom: 2rem;
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-/* Estilos para o formulário e inputs */
+/* Estilos para os campos de input */
 .input-group {
-  margin-bottom: 1.5rem;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .input-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
   font-size: 0.875rem;
-  color: var(--dark-charcoal);
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 
 .input-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--border-gray);
-  border-radius: 6px;
-  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
   font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  border-color: var(--primary-border);
+  box-shadow: 0 0 10px var(--primary-glow);
 }
 
-/* Estilos dos Botões */
+/* Container da mensagem de erro para evitar CLS */
+.error-container {
+  min-height: 24px; /* Garante espaço mesmo sem erro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-message {
+  color: var(--error-border);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Botão de login principal */
 .login-button {
-  width: 100%;
-  padding: 12px;
-  background-color: var(--dark-charcoal);
-  color: var(--white-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  background-image: linear-gradient(to right, #3b82f6, #6366f1);
+  color: white;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.login-button:hover {
-  background-color: #4A5568;
+  transition: transform 0.2s, box-shadow 0.3s;
 }
 
 .login-button:disabled {
-  background-color: #A0AEC0;
+  background: #4b5563;
   cursor: not-allowed;
 }
+
+.pokeball-loader svg {
+  height: 24px;
+  width: 24px;
+}
+
 
 /* Separador "ou entre com" */
 .separator {
   display: flex;
   align-items: center;
   text-align: center;
-  color: var(--text-color);
-  margin: 1.5rem 0;
+  color: var(--text-secondary);
   font-size: 0.875rem;
 }
-
 .separator::before,
 .separator::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid var(--border-gray);
+  border-bottom: 1px solid var(--surface-border);
 }
+.separator:not(:empty)::before { margin-right: .5em; }
+.separator:not(:empty)::after { margin-left: .5em; }
 
-.separator:not(:empty)::before {
-  margin-right: .5em;
-}
 
-.separator:not(:empty)::after {
-  margin-left: .5em;
-}
-
-/* Botões de Login Social */
+/* Botões de login social */
 .social-login-buttons {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin-bottom: 1.5rem;
 }
 
 .social-button {
-  flex: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 0.5rem;
-  padding: 10px;
-  border: 1px solid var(--border-gray);
-  border-radius: 6px;
-  background-color: var(--white-color);
-  cursor: pointer;
-  font-size: 0.9rem;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  color: var(--text-primary);
   font-weight: 500;
-  transition: background-color 0.2s ease-in-out;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .social-button:hover {
-  background-color: var(--light-gray);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Mensagem de Erro e Link de Cadastro */
-.error-message {
-  color: var(--error-color);
-  margin-top: 1rem;
-  font-size: 0.875rem;
-}
-
+/* Link de cadastro */
 .signup-link {
-  font-size: 0.9rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
 }
 
 .signup-link a {
-  color: var(--primary-color);
+  color: var(--primary-border);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .signup-link a:hover {
   text-decoration: underline;
 }
-/* Adicione isso ao final do seu Login.css */
+
+/* Aprimoramento para telas maiores */
+@media (min-width: 768px) {
+  .login-box {
+    padding: 2.5rem 3rem;
+  }
+}
+/* Estilos para a tela de sucesso */
+.success-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+}
+
+.success-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
 .success-message {
-  color: #2F855A; /* Um tom de verde */
-  background-color: #E6FFFA;
-  padding: 10px;
-  border-radius: 6px;
-  margin-top: 1rem;
-  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 300px;
 }

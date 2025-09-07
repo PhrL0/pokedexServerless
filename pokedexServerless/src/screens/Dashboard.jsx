@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import '../style/Dashboard.css'; // Criaremos este arquivo a seguir
+import toast, { Toaster } from 'react-hot-toast';
+
+import '../style/Dashboard.css'; 
+
 import Pokeball from '../components/Pokeball';
-import pokeballIcon from '../assets/pokeball.png'; 
 import AnimatedGrass from '../components/AnimatedGrass';
 import CaptureModal from '../components/CaptureModal';
 import LoadingScreen from '../components/LoadingScreen';
-import Navbar from './Navbar';
-// Ícone do Menu (Hamburger)
-const MenuIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="3" y1="12" x2="21" y2="12"></line>
-    <line x1="3" y1="6" x2="21" y2="6"></line>
-    <line x1="3" y1="18" x2="21" y2="18"></line>
-  </svg>
-);
+import Navbar from './Navbar'; 
+import pokeballIcon from '../assets/pokeball.png';
+
+const POKEMON_COUNT_IN_WILD = 7;
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -23,88 +20,133 @@ export default function Dashboard() {
   const [isCapturing, setIsCapturing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [capturedPokemon, setCapturedPokemon] = useState(null);
+  const [hotspots, setHotspots] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      // 1. Pega os dados do usuário logado
+    const spawnPokemon = async () => {
+      const randomIds = new Set();
+      while (randomIds.size < POKEMON_COUNT_IN_WILD) {
+        randomIds.add(Math.ceil(Math.random() * 151));
+      }
+
+      const pokemonPromises = Array.from(randomIds).map(id => 
+        fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then(res => res.json())
+      );
+      
+      const pokemonResults = await Promise.all(pokemonPromises);
+      
+      const newHotspots = pokemonResults.map((pokemon, index) => ({
+        id: index,
+        pokemon: {
+          id: pokemon.id,
+          name: pokemon.name,
+          spriteUrl: pokemon.sprites.front_default,
+        },
+        position: {
+          top: `${Math.random() * 30 + 55}%`,
+          left: `${Math.random() * 80 + 10}%`,
+        },
+        isVisible: false,
+      }));
+
+      setHotspots(newHotspots);
+    };
+
+    const fetchInitialData = async () => {
+      setLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setUser(user);
-        
-        // 2. Pega a contagem de Pokémon capturados por esse usuário
-        const { count, error } = await supabase
-          .from('capturas')
-          .select('*', { count: 'exact', head: true })
-          .eq('user_id', user.id);AnimatedGrass.css
-
-        if (error) {
-          console.error('Erro ao buscar contagem de capturas:', error);
-        } else {
-          setCaptureCount(count);
-        }
+        const { count } = await supabase.from('capturas').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
+        setCaptureCount(count || 0);
       }
+      await spawnPokemon();
       setLoading(false);
     };
 
-    fetchData();
-  }, []); // O array vazio [] faz com que isso rode apenas uma vez, quando o componente é montado
+    fetchInitialData();
+  }, []);
+
+  useEffect(() => {
+    if (hotspots.length === 0) return;
+
+    const interval = setInterval(() => {
+      setHotspots(prevHotspots => {
+        const newHotspots = prevHotspots.map(h => ({ ...h, isVisible: false }));
+        const randomIndex = Math.floor(Math.random() * newHotspots.length);
+        newHotspots[randomIndex].isVisible = true;
+        return newHotspots;
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [hotspots.length]);
 
   const handleCapture = async () => {
     if (isCapturing) return;
     setIsCapturing(true);
 
-    // Chama a Edge Function que criamos no conceito
     const { data, error } = await supabase.functions.invoke('capture-pokemon');
 
     if (error) {
-      alert(`Erro ao capturar: ${error.message}`);
+      toast.error(`Erro ao capturar: ${error.message}`);
     } else {
+      const pokemonName = data.name.charAt(0).toUpperCase() + data.name.slice(1);
       if (data.alreadyCaught) {
-        alert("Ops! Você já tem este Pokémon.");
+        toast(`É um ${pokemonName}! Você já o capturou.`, { icon: '😅' });
       } else {
-        // Se for um novo, atualize os estados para abrir o modal
         setCapturedPokemon(data);
         setIsModalOpen(true);
         setCaptureCount(prevCount => prevCount + 1);
+        toast.success(`${pokemonName} foi capturado com sucesso!`);
       }
-
     }
-
     setIsCapturing(false);
   };
+  
   const closeModal = () => {
     setIsModalOpen(false);
     setCapturedPokemon(null);
-  }
-  if (loading) {
-    return <LoadingScreen text="A carregar a sua jornada..." />;
-  }
+  };
+
+  if (loading) { return <LoadingScreen text="Procurando Pokémon selvagens..." />; }
 
   return (
     <div className="dashboard-container">
+      <Toaster position="top-center" toastOptions={{ className: 'toast-notification' }} />
+      <div className="dashboard-background"></div>
+      {/* --- SEÇÃO CORRIGIDA --- */}
       <header className="dashboard-header">
         <div className="header-left">
-          <Navbar></Navbar>
-          {/* Usamos o nome do metadata ou o email como fallback */}
+          <Navbar />
           <span className="trainer-name">{user?.user_metadata?.full_name || user?.email}</span>
         </div>
         <div className="header-right">
           <img src={pokeballIcon} alt="Capturados" className="header-pokeball-icon" />
-          <span className="capture-counter">{captureCount} / 151 Capturados</span>
+          <span className="capture-counter">{captureCount} / 151</span>
         </div>
       </header>
-      <AnimatedGrass />
-      <main className="dashboard-main">
-        <div className="action-box">
-          <h3 className="action-title">Arraste para capturar!</h3>
-          <Pokeball onThrow={handleCapture} disabled={isCapturing} />
+      
+      {hotspots.map(spot => (
+        <div 
+          key={spot.id} 
+          className="hotspot-container" 
+          style={{ top: spot.position.top, left: spot.position.left }}
+        >
+          <img 
+            src={spot.pokemon.spriteUrl} 
+            alt={spot.pokemon.name}
+            className={`world-pokemon-sprite ${spot.isVisible ? 'visible' : ''}`}
+          />
+          <AnimatedGrass isRustling={spot.isVisible} />
         </div>
+      ))}
+
+      <main className="dashboard-main">
+        <Pokeball onThrow={handleCapture} disabled={isCapturing} />
       </main>
-      <CaptureModal 
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        pokemonData={capturedPokemon}
-      />
+      
+      <CaptureModal isOpen={isModalOpen} onClose={closeModal} pokemonData={capturedPokemon} />
     </div>
   );
 }

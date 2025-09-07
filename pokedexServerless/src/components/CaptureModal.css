@@ -1,71 +1,120 @@
+/* Fundo escuro que cobre a tela */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 20, 40, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(5px); /* Efeito de desfoque no fundo */
 }
 
+/* O card principal do modal */
 .modal-content {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  text-align: center;
+  position: fixed; /* Usamos fixed para centralizar com x/y e transform */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Framer Motion vai controlar isso */
   width: 90%;
-  max-width: 320px;
-  color: #333;
-  animation: fadeIn 0.3s ease-out;
+  max-width: 380px;
+  background-color: #ffffff;
+  padding: 2rem 1.5rem;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  color: #1A202C;
+  overflow: hidden; /* Garante que os brilhos não vazem */
 }
 
+/* Título principal */
 .modal-content h2 {
-  margin-top: 0;
-  font-size: 1.8rem;
-  color: #2D3748;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  z-index: 2;
 }
 
-.pokemon-sprite {
+/* Container para o Pokémon e seu brilho */
+.pokemon-reveal {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem 0;
+  z-index: 2;
+}
+
+/* O brilho radial atrás do Pokémon */
+.pokemon-glow {
+  position: absolute;
   width: 150px;
   height: 150px;
-  image-rendering: pixelated; /* Deixa a imagem pixelada como no jogo */
-  margin: 1rem 0;
+  background: radial-gradient(circle, rgba(255, 204, 0, 0.6) 0%, rgba(255, 204, 0, 0) 70%);
+  filter: blur(10px);
+  z-index: 0;
 }
 
+/* O sprite do Pokémon, acima do brilho */
+.pokemon-sprite {
+  width: 128px;
+  height: 128px;
+  object-fit: contain;
+  z-index: 1;
+  /* Remove o filtro de sombra feio de imagens pixeladas em alguns navegadores */
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Texto descritivo */
 .modal-content p {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin: 0;
+  color: #4A5568;
+  z-index: 2;
 }
 
+/* Botão de confirmação */
 .modal-button {
   width: 100%;
   padding: 0.8rem;
   font-size: 1.1rem;
   font-weight: 600;
   color: white;
-  background-color: #3B82F6; /* Azul */
+  background-color: #3b82f6; /* Azul vibrante */
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  margin-top: 0.5rem;
+  z-index: 2;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  transition: background-color 0.2s ease;
 }
 
 .modal-button:hover {
-  background-color: #2563EB;
+  background-color: #2563eb;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+/* Animação Lottie, agora posicionada como uma vinheta de fundo */
+.lottie-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  opacity: 0.8;
+  z-index: 0;
+  pointer-events: none; /* Garante que não interfira com cliques */
 }

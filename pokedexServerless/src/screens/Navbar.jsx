@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'; // Usaremos NavLink para o estilo do item ativo
 import { Drawer, Button, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
-// --- ÍCONES DO MATERIAL-UI ---
-// Para usá-los, primeiro instale o pacote: npm install @mui/icons-material
-import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon'; // Ícone para Captura
-import ViewInArIcon from '@mui/icons-material/ViewInAr'; // Ícone para a Pokédex
-
-// Ícone de Menu (Hamburger) - O seu já está ótimo
-const MenuIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>;
+// --- ÍCONES ---
+import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
+import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import MenuIcon from '@mui/icons-material/Menu'; // Usando o ícone do MUI para consistência
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,53 +17,109 @@ export default function Navbar() {
     setIsOpen(open);
   };
 
+  const menuItems = [
+    { text: 'Capturar Pokémon', icon: <CatchingPokemonIcon />, path: '/dashboard' },
+    { text: 'Minha Pokédex', icon: <ViewInArIcon />, path: '/pokedex' },
+  ];
+
   const list = () => (
     <Box
-      // A prop 'sx' é onde a mágica do estilo acontece
       sx={{ 
-        width: 280, // Um pouco mais largo
-        height: '100%', // Ocupa a altura toda
-        backgroundColor: '#f2f2f2', // Um cinza claro de fundo, como na Pokédex
+        width: 280,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
       }}
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
-      <Box sx={{ padding: '16px', backgroundColor: '#e62117', color: 'white' }}>
-        {/* Adicionamos um cabeçalho temático */}
-        <ListItemText primary="Pokédex Menu" primaryTypographyProps={{ fontWeight: 'bold', fontSize: '1.2rem' }} />
+      {/* Cabeçalho do Menu */}
+      <Box sx={{ padding: '24px 16px', color: '#f1f5f9' }}>
+        <ListItemText 
+          primary="Pokédex Menu" 
+          primaryTypographyProps={{ 
+            fontWeight: '700', 
+            fontSize: '1.5rem',
+            textAlign: 'center',
+            letterSpacing: '0.5px'
+          }} 
+        />
       </Box>
-      <List>
-        <ListItem disablePadding>
-          {/* Usamos ListItemButton para um efeito de clique melhor */}
-          <ListItemButton component={Link} to="/dashboard" sx={{ '&:hover': { backgroundColor: 'rgba(229, 33, 23, 0.1)' } }}>
-            <ListItemIcon>
-              <CatchingPokemonIcon sx={{ color: '#e62117' }} />
-            </ListItemIcon>
-            <ListItemText primary="Capturar Pokémon" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton component={Link} to="/pokedex" sx={{ '&:hover': { backgroundColor: 'rgba(229, 33, 23, 0.1)' } }}>
-            <ListItemIcon>
-              <ViewInArIcon sx={{ color: '#333' }} />
-            </ListItemIcon>
-            <ListItemText primary="Minha Pokédex" />
-          </ListItemButton>
-        </ListItem>
+
+      {/* Lista de Navegação */}
+      <List sx={{ padding: '0 8px' }}>
+        {menuItems.map((item) => (
+          <ListItem key={item.text} disablePadding sx={{ marginBottom: '8px' }}>
+            <ListItemButton
+              component={NavLink}
+              to={item.path}
+              end // Garante que a rota "dashboard" não fique ativa para outras rotas
+              sx={{
+                borderRadius: '8px',
+                color: '#cbd5e1', // Cor do texto padrão
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  color: '#ffffff',
+                },
+                // Estilo para o item ATIVO/SELECIONADO
+                '&.active': {
+                  backgroundColor: 'rgba(230, 33, 23, 0.8)',
+                  color: '#ffffff',
+                  boxShadow: '0 4px 20px rgba(230, 33, 23, 0.4)',
+                  '& .MuiListItemIcon-root': {
+                    color: '#ffffff',
+                  },
+                },
+              }}
+            >
+              <ListItemIcon sx={{ color: '#cbd5e1', minWidth: '40px' }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText primary={item.text} primaryTypographyProps={{ fontWeight: '500' }} />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
     </Box>
   );
 
   return (
     <>
-      <Button onClick={toggleDrawer(true)} sx={{ color: 'white', minWidth: 'auto', padding: '8px' }}>
+      {/* Botão de Menu no HUD */}
+      <Button 
+        onClick={toggleDrawer(true)} 
+        sx={{ 
+          color: 'white', 
+          minWidth: 'auto', 
+          padding: '10px',
+          backgroundColor: 'rgba(0, 0, 0, 0.3)',
+          borderRadius: '50%',
+          backdropFilter: 'blur(4px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          '&:hover': {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }
+        }}
+      >
         <MenuIcon />
       </Button>
+
+      {/* O Drawer (Menu Lateral) */}
       <Drawer
         anchor="left"
         open={isOpen}
         onClose={toggleDrawer(false)}
+        // A prop PaperProps é a chave para estilizar o container do Drawer
+        PaperProps={{
+          sx: {
+            // O EFEITO DE VIDRO!
+            backgroundColor: 'rgba(15, 23, 42, 0.8)',
+            backdropFilter: 'blur(12px)',
+            webkitBackdropFilter: 'blur(12px)', // Para Safari
+            borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+          }
+        }}
       >
         {list()}
       </Drawer>

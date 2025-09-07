@@ -1,100 +1,140 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-
-/* --- Estilos Gerais --- */
+/* --- AMBIENTE E FUNDO --- */
 .pokedex-container {
-  font-family: 'Poppins', sans-serif;
-  background-color: #f7f7f7; /* Um fundo branco mais suave */
   min-height: 100vh;
-  box-sizing: border-box;
+  background-color: #0d1117; /* Azul-marinho escuro, quase preto */
+  background-image: 
+    radial-gradient(circle at 25px 25px, rgba(59, 130, 246, 0.1) 2%, transparent 0%), 
+    radial-gradient(circle at 75px 75px, rgba(59, 130, 246, 0.1) 2%, transparent 0%);
+  background-size: 100px 100px;
+  color: #f1f5f9;
 }
 
-/* --- Cabeçalho --- */
+/* --- CABEÇALHO --- */
 .pokedex-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 2rem;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-
-  /* Posiciona o menu no lugar certo */
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 10;
+  background-color: rgba(13, 17, 23, 0.8);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .pokedex-header h1 {
-  margin: 0;
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  color: #333;
 }
 
-.pokedex-header svg {
-  color: #555;
-  cursor: pointer;
-  transition: color 0.2s ease;
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.pokedex-header svg:hover {
-  color: #e62117; /* Vermelho Pokémon no hover */
+.search-bar input {
+  background: none;
+  border: none;
+  outline: none;
+  color: #f1f5f9;
+  font-size: 1rem;
 }
 
-/* --- Grid dos Pokémon --- */
+.search-bar input::placeholder {
+  color: #94a3b8;
+}
+
+/* --- GRADE DE POKÉMON --- */
 .pokedex-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-  gap: 1.5rem; /* Mais espaçamento */
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1.5rem;
   padding: 2rem;
 }
 
-/* --- Card Individual de Pokémon (A grande melhoria!) --- */
+/* --- CARD INDIVIDUAL (O CORAÇÃO DA MUDANÇA) --- */
 .pokemon-card {
-  background-color: #ffffff;
+  position: relative;
+  aspect-ratio: 1 / 1; /* Garante que o card seja sempre quadrado */
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
   border-radius: 16px;
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  aspect-ratio: 1 / 1;
-  border: 1px solid #eee;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-
-  /* Animação suave */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: background 0.3s, border-color 0.3s;
 }
 
+.pokemon-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Efeito de hover no card */
 .pokemon-card:hover {
-  transform: translateY(-8px) scale(1.05); /* Efeito de "flutuar" */
-  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
-  z-index: 5;
+  border-color: rgba(59, 130, 246, 0.8);
+  background: linear-gradient(145deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05));
 }
 
-/* --- Sprite do Pokémon --- */
 .pokemon-sprite {
-  width: 90%;
-  height: 90%;
+  width: 80%;
+  height: auto;
+  object-fit: contain;
+  transition: filter 0.3s ease, transform 0.3s ease;
   image-rendering: pixelated;
-  transition: filter 0.5s ease-in-out; /* Animação suave ao "revelar" */
 }
 
-/* A silhueta melhorada */
-.pokemon-sprite.silhouette {
-  filter: brightness(0) contrast(100%) opacity(0.5);
+/* --- ESTADOS: CAPTURADO VS. SILHUETA --- */
+.pokemon-card.captured .pokemon-sprite {
+  filter: none; /* Remove qualquer filtro */
 }
 
-/* Efeito subtil nos Pokémon capturados */
-.pokemon-sprite.captured {
-  filter: none; /* Garante que não haja filtros */
+.pokemon-card.silhouette .pokemon-sprite {
+  filter: brightness(0) contrast(0%) opacity(0.6);
+}
+.pokemon-card.silhouette:hover .pokemon-sprite {
+    filter: brightness(0) contrast(0%) opacity(0.8);
 }
 
-/* --- Tela de Carregamento --- */
-.loading-screen {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 1.5rem;
-  font-family: 'Poppins', sans-serif;
-  color: #555;
+
+/* --- INFORMAÇÕES QUE APARECEM NO HOVER --- */
+.pokemon-info {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  opacity: 0; /* ESCONDIDO POR PADRÃO */
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.pokemon-card:hover .pokemon-info {
+  opacity: 1; /* REVELA NO HOVER */
+  transform: translateY(0);
+}
+
+.pokemon-number {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  display: block;
+}
+
+.pokemon-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: block;
 }
