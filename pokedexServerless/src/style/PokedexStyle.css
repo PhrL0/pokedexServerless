@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* --- Estilos Gerais --- */
+.pokedex-container {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f7f7f7; /* Um fundo branco mais suave */
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* --- Cabeçalho --- */
+.pokedex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+  /* Posiciona o menu no lugar certo */
+  position: relative;
+  z-index: 10;
+}
+
+.pokedex-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.pokedex-header svg {
+  color: #555;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.pokedex-header svg:hover {
+  color: #e62117; /* Vermelho Pokémon no hover */
+}
+
+/* --- Grid dos Pokémon --- */
+.pokedex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 1.5rem; /* Mais espaçamento */
+  padding: 2rem;
+}
+
+/* --- Card Individual de Pokémon (A grande melhoria!) --- */
+.pokemon-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1 / 1;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+  /* Animação suave */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pokemon-card:hover {
+  transform: translateY(-8px) scale(1.05); /* Efeito de "flutuar" */
+  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+  z-index: 5;
+}
+
+/* --- Sprite do Pokémon --- */
+.pokemon-sprite {
+  width: 90%;
+  height: 90%;
+  image-rendering: pixelated;
+  transition: filter 0.5s ease-in-out; /* Animação suave ao "revelar" */
+}
+
+/* A silhueta melhorada */
+.pokemon-sprite.silhouette {
+  filter: brightness(0) contrast(100%) opacity(0.5);
+}
+
+/* Efeito subtil nos Pokémon capturados */
+.pokemon-sprite.captured {
+  filter: none; /* Garante que não haja filtros */
+}
+
+/* --- Tela de Carregamento --- */
+.loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+  color: #555;
+}

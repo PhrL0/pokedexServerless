@@ -1,0 +1,59 @@
+.animated-grass-container {
+  position: absolute;
+  width: 500px; /* Largura da "moita" de grama */
+  height: 300px; /* Altura da "moita" de grama */
+  bottom: 50%; /* Posição vertical - ajuste conforme necessário */
+  left: 50%;
+  transform: translateX(-50%); /* Centraliza horizontalmente */
+  z-index: 5;
+  pointer-events: none; /* A grama não pode ser clicada */
+}
+
+.tall-grass-image {
+  width: 100%;
+  height: 100%;
+  
+  /* Ponto Chave: A animação vai pivotar a partir da base da imagem */
+  transform-origin: bottom center;
+
+  /* Aplica a animação que definimos abaixo */
+  animation: rustleGrass 7s ease-in-out infinite;
+}
+
+/* A MÁGICA ACONTECE AQUI:
+  Definimos uma animação longa (7 segundos) onde a maior parte do tempo
+  a grama fica parada, e só em alguns momentos ela treme.
+*/
+@keyframes rustleGrass {
+  0% {
+    transform: rotate(0deg); /* Posição inicial, parada */
+  }
+  
+  20% {
+    transform: rotate(0deg); /* Continua parada */
+  }
+
+  25% {
+    transform: rotate(4deg) translateX(5px); /* Primeiro tremor para a direita */
+  }
+  
+  30% {
+    transform: rotate(-4deg) translateX(-5px); /* Tremor para a esquerda */
+  }
+
+  35% {
+    transform: rotate(2deg); /* Volta um pouco */
+  }
+
+  40% {
+    transform: rotate(-1deg); /* Volta mais um pouco */
+  }
+
+  45% {
+    transform: rotate(0deg); /* Volta ao normal e fica parada */
+  }
+
+  100% {
+    transform: rotate(0deg); /* Permanece parada até o fim do ciclo */
+  }
+}

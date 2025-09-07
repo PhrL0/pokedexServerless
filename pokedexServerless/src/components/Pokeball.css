@@ -1,0 +1,23 @@
+.pokeball-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100px; /* Altura da área de "arrasto" */
+  position: relative;
+}
+
+.pokeball-draggable {
+  width: 60px;
+  height: 60px;
+  cursor: grab;
+  position: relative;
+  z-index: 10;
+  pointer-events: none;     /* A imagem em si ignora eventos de clique */
+  user-select: none;        /* Impede que a imagem seja selecionada */
+  -webkit-user-drag: none;  /* Desabilita o arrasto nativo em navegadores WebKit (Chrome, Safari) */
+}
+
+.pokeball-wrapper > div:active {
+  cursor: grabbing;
+}

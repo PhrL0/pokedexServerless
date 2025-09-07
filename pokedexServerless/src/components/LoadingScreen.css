@@ -1,0 +1,33 @@
+.loading-overlay {
+  position: fixed; /* Fica por cima de todo o conteúdo */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  
+  /* Efeito de fundo */
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  
+  /* Centraliza o conteúdo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  z-index: 9999; /* Garante que está no topo de tudo */
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loading-text {
+  font-family: 'Poppins', sans-serif; /* Usando a fonte da Pokédex */
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #4A5568;
+}

@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.dashboard-container {
+  background-image: url('../assets/dashboard.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  overflow: hidden; /* Previne barras de rolagem */
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+  flex-shrink: 0;
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.trainer-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.capture-counter {
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: rgba(0,0,0,0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}
+
+.header-pokeball-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.dashboard-main {
+  flex-grow: 1;
+  position: relative; /* Necessário para posicionar a action-box */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.action-box {
+  background-color: rgba(255, 255, 255, 0.95);
+  width: 90%;
+  max-width: 450px;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  gap: 0.5rem;
+  
+}
+
+.capture-button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(180deg, #60D68A 0%, #3DB872 100%);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.capture-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.capture-button:disabled {
+  background: #B0B0B0;
+  cursor: not-allowed;
+}
+
+.action-pokeball-icon {
+  width: 60px;
+  height: 60px;
+  margin-top: 0.5rem;
+}
+.action-title {
+  color: #4A5568; /* Cor escura para o texto */
+  font-weight: 600;
+  margin: 0;
+  font-size: 1.1rem;
+}

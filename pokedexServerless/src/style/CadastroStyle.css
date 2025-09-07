@@ -1,0 +1,189 @@
+/* Estilos Globais e Reset */
+:root {
+  --primary-color: #3B82F6; /* Azul */
+  --primary-hover: #2563EB;
+  --dark-charcoal: #2D3748;
+  --light-gray: #F7FAFC;
+  --border-gray: #E2E8F0;
+  --text-color: #4A5568;
+  --error-color: #E53E3E;
+  --white-color: #FFFFFF;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--light-gray);
+  color: var(--text-color);
+}
+
+/* Container principal para centralizar tudo */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  width: 100%; /* Garante que ocupe a largura total também */
+  box-sizing: border-box;
+  background-image: url('../assets/cadastro.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* A caixa do formulário de login */
+.login-box {
+  background-color: var(--white-color);
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  color: var(--dark-charcoal);
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
+/* Estilos para o formulário e inputs */
+.input-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--dark-charcoal);
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-gray);
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Estilos dos Botões */
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--dark-charcoal);
+  color: var(--white-color);
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.login-button:hover {
+  background-color: #4A5568;
+}
+
+.login-button:disabled {
+  background-color: #A0AEC0;
+  cursor: not-allowed;
+}
+
+/* Separador "ou entre com" */
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--text-color);
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border-gray);
+}
+
+.separator:not(:empty)::before {
+  margin-right: .5em;
+}
+
+.separator:not(:empty)::after {
+  margin-left: .5em;
+}
+
+/* Botões de Login Social */
+.social-login-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.social-button {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 10px;
+  border: 1px solid var(--border-gray);
+  border-radius: 6px;
+  background-color: var(--white-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.social-button:hover {
+  background-color: var(--light-gray);
+}
+
+/* Mensagem de Erro e Link de Cadastro */
+.error-message {
+  color: var(--error-color);
+  margin-top: 1rem;
+  font-size: 0.875rem;
+}
+
+.signup-link {
+  font-size: 0.9rem;
+}
+
+.signup-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+/* Adicione isso ao final do seu Login.css */
+.success-message {
+  color: #2F855A; /* Um tom de verde */
+  background-color: #E6FFFA;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+}
